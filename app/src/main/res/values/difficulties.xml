@@ -1,0 +1,7 @@
+<resources>
+    <string-array name="difficulties">
+        <item>@string/easy</item>
+        <item>@string/medium</item>
+        <item>@string/hard</item>
+    </string-array>
+</resources>
