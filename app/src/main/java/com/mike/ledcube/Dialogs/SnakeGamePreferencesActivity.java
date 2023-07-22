@@ -18,7 +18,7 @@ import com.mike.ledcube.R;
 
 import me.jfenn.colorpickerdialog.dialogs.ColorPickerDialog;
 
-public class SnakePreferencesActivity extends AppCompatActivity {
+public class SnakeGamePreferencesActivity extends AppCompatActivity {
     Spinner difficultySpinner;
     Button headButton;
     Button bodyButton;
@@ -40,9 +40,7 @@ public class SnakePreferencesActivity extends AppCompatActivity {
 
         Setup();
         cancelButton = findViewById(R.id.snake_cancel_button);
-        cancelButton.setOnClickListener((view) ->{
-            finish();
-        });
+        cancelButton.setOnClickListener((view) -> finish());
         startButton = findViewById(R.id.snake_ok_button);
         startButton.setOnClickListener((view) ->{
             startActivity(new Intent(this, SnakeGameActivity.class));
@@ -66,42 +64,36 @@ public class SnakePreferencesActivity extends AppCompatActivity {
         mirrorSwitch.setChecked(mirror);
 
         //createListeners
-        headButton.setOnClickListener((view -> {
-            new ColorPickerDialog()
-                    .withColor(Color.parseColor(headColor))
-                    .withAlphaEnabled(false)
-                    .withCornerRadius(20)
-                    .withListener((dialog, color) -> {
-                        editor.putString(getString(R.string.snake_head_color), String.format("#%06X", (0xFFFFFF & color)));
-                        editor.apply();
-                        headButton.setBackgroundColor(color);
-                    })
-                    .show(getSupportFragmentManager(), "snakeHeadColorPicker");
-        }));
-        bodyButton.setOnClickListener((view -> {
-            new ColorPickerDialog()
-                    .withColor(Color.parseColor(bodyColor))
-                    .withAlphaEnabled(false)
-                    .withCornerRadius(20)
-                    .withListener((dialog, color) -> {
-                        editor.putString(getString(R.string.snake_body_color), String.format("#%06X", (0xFFFFFF & color)));
-                        editor.apply();
-                        bodyButton.setBackgroundColor(color);
-                    })
-                    .show(getSupportFragmentManager(), "snakeBodyColorPicker");
-        }));
-        foodButton.setOnClickListener((view -> {
-            new ColorPickerDialog()
-                    .withColor(Color.parseColor(foodColor))
-                    .withAlphaEnabled(false)
-                    .withCornerRadius(20)
-                    .withListener((dialog, color) -> {
-                        editor.putString(getString(R.string.snake_food_color), String.format("#%06X", (0xFFFFFF & color)));
-                        editor.apply();
-                        foodButton.setBackgroundColor(color);
-                    })
-                    .show(getSupportFragmentManager(), "snakeFoodColorPicker");
-        }));
+        headButton.setOnClickListener((view -> new ColorPickerDialog()
+                .withColor(Color.parseColor(headColor))
+                .withAlphaEnabled(false)
+                .withCornerRadius(20)
+                .withListener((dialog, color) -> {
+                    editor.putString(getString(R.string.snake_head_color), String.format("#%06X", (0xFFFFFF & color)));
+                    editor.apply();
+                    headButton.setBackgroundColor(color);
+                })
+                .show(getSupportFragmentManager(), "snakeHeadColorPicker")));
+        bodyButton.setOnClickListener((view -> new ColorPickerDialog()
+                .withColor(Color.parseColor(bodyColor))
+                .withAlphaEnabled(false)
+                .withCornerRadius(20)
+                .withListener((dialog, color) -> {
+                    editor.putString(getString(R.string.snake_body_color), String.format("#%06X", (0xFFFFFF & color)));
+                    editor.apply();
+                    bodyButton.setBackgroundColor(color);
+                })
+                .show(getSupportFragmentManager(), "snakeBodyColorPicker")));
+        foodButton.setOnClickListener((view -> new ColorPickerDialog()
+                .withColor(Color.parseColor(foodColor))
+                .withAlphaEnabled(false)
+                .withCornerRadius(20)
+                .withListener((dialog, color) -> {
+                    editor.putString(getString(R.string.snake_food_color), String.format("#%06X", (0xFFFFFF & color)));
+                    editor.apply();
+                    foodButton.setBackgroundColor(color);
+                })
+                .show(getSupportFragmentManager(), "snakeFoodColorPicker")));
         difficultySpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

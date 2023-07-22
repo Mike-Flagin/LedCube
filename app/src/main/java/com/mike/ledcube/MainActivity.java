@@ -20,7 +20,6 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView connectionTextView;
 
-    private Button disconnectButton;
     private Button connectButton;
     public static BluetoothConnectionHelper BLHelper;
 
@@ -35,10 +34,8 @@ public class MainActivity extends AppCompatActivity {
 
         connectionTextView = findViewById(R.id.statusTextView);
         connectButton = findViewById(R.id.connect_button);
-        connectButton.setOnClickListener((vw) -> {
-            BLHelper.connect();
-        });
-        disconnectButton = findViewById(R.id.disconnect_button);
+        connectButton.setOnClickListener((vw) -> BLHelper.connect());
+        Button disconnectButton = findViewById(R.id.disconnect_button);
         disconnectButton.setOnClickListener((vw) -> {
             SharedPreferences sharedPref = getSharedPreferences(getString(R.string.pref_file), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();

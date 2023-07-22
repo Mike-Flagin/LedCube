@@ -60,6 +60,7 @@ public class BluetoothCommands {
             }
             command.add(DELIMITER);
         }
+        command.remove(command.size() - 1);
         command.add(EOL);
         char[] res = new char[command.size()];
         for(int i = 0; i < command.size(); i++) {
@@ -111,5 +112,9 @@ public class BluetoothCommands {
             tmp.append(s);
         }
         return res.toArray(new String[0]);
+    }
+
+    public static String getColorComponent(float value) {
+        return String.valueOf((int)Math.floor(value == 1 ? 255 : value * 256));
     }
 }

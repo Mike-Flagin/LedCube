@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.mike.ledcube.CubeCommunication.GameTypes;
-import com.mike.ledcube.Dialogs.SnakePreferencesActivity;
+import com.mike.ledcube.Dialogs.SnakeGamePreferencesActivity;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -24,7 +24,6 @@ import java.util.List;
 
 public class GamesFragment extends Fragment {
     private final ArrayList<GameState> games = new ArrayList<>();
-    private RecyclerView gamesRecyclerView;
 
     public GamesFragment() {
     }
@@ -45,7 +44,7 @@ public class GamesFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        gamesRecyclerView = requireView().findViewById(R.id.games_recyclerview);
+        RecyclerView gamesRecyclerView = requireView().findViewById(R.id.games_recyclerview);
         gamesRecyclerView.setAdapter(new GameAdapter(games));
     }
 
@@ -59,7 +58,7 @@ public class GamesFragment extends Fragment {
         //TODO:tetris game
         switch (game){
             case Snake:
-                startActivity(new Intent(requireContext(), SnakePreferencesActivity.class));
+                startActivity(new Intent(requireContext(), SnakeGamePreferencesActivity.class));
                 break;
         }
     }
@@ -96,9 +95,7 @@ public class GamesFragment extends Fragment {
         public void onBindViewHolder(@NotNull GamesFragment.GameViewHolder holder, int position) {
             GameState state = games.get(position);
             holder.nameTextView.setText(state.getName());
-            holder.gameLayout.setOnClickListener((view) -> {
-                startGameActivity(state.getGame());
-            });
+            holder.gameLayout.setOnClickListener((view) -> startGameActivity(state.getGame()));
         }
 
         @Override

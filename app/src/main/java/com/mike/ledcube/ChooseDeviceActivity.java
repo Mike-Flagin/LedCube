@@ -1,6 +1,7 @@
 package com.mike.ledcube;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothManager;
@@ -116,7 +117,7 @@ public class ChooseDeviceActivity extends AppCompatActivity {
             layout.setOnClickListener(view -> {
                 String deviceName = device.getName();
                 String deviceAddress = device.getAddress();
-                SharedPreferences sharedPref = ChooseDeviceActivity.this.getSharedPreferences(getString(R.string.pref_file), Context.MODE_PRIVATE);;
+                SharedPreferences sharedPref = ChooseDeviceActivity.this.getSharedPreferences(getString(R.string.pref_file), Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.bluetooth_device_name), deviceName);
                 editor.putString(getString(R.string.bluetooth_device_address), deviceAddress);
@@ -153,6 +154,7 @@ public class ChooseDeviceActivity extends AppCompatActivity {
             return deviceList.length;
         }
 
+        @SuppressLint("NotifyDataSetChanged")
         void updateList(Collection<BluetoothDevice> deviceList) {
             this.deviceList = deviceList.toArray(new BluetoothDevice[0]);
             notifyDataSetChanged();

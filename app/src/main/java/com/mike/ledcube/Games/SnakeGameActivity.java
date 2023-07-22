@@ -1,5 +1,6 @@
 package com.mike.ledcube.Games;
 
+import static com.mike.ledcube.CubeCommunication.BluetoothCommands.getColorComponent;
 import static com.mike.ledcube.MainActivity.BLHelper;
 
 import android.content.Context;
@@ -81,10 +82,6 @@ public class SnakeGameActivity extends AppCompatActivity {
         BLHelper.getMessages().observe(this, this::onMessage);
     }
 
-    private String getColorComponent(float value) {
-        return String.valueOf((int)Math.floor(value == 1 ? 255 : value * 256));
-    }
-
     private void onMessage(Event<char[]> message) {
         String[] msg = BluetoothCommands.parseCommand(message.getContentIfNotHandled());
         if(msg != null) {
@@ -93,9 +90,7 @@ public class SnakeGameActivity extends AppCompatActivity {
                     int score = Integer.parseInt(msg[3]);
                     new AlertDialog.Builder(this)
                             .setMessage(getString(R.string.snake_gameover, score))
-                            .setPositiveButton(R.string.ok, (dialogInterface, i) -> {
-                                finish();
-                            })
+                            .setPositiveButton(R.string.ok, (dialogInterface, i) -> finish())
                             .setCancelable(false).create().show();
                 }
                 if(msg[2].equals("1")){

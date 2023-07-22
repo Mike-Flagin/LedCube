@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="pref_file">preferences</string>
+    <string name="bluetooth_device_name">bluetooth_device_name</string>
+    <string name="bluetooth_device_address">bluetooth_device_address</string>
+    <string name="string_null">null</string>
+
+                                            <!-- GAMES -->
+    <!-- Snake -->
+    <string name="snake_preferences">snake_pref</string>
+    <string name="snake_body_color">snake_body_color</string>
+    <string name="snake_head_color">snake_head_color</string>
+    <string name="snake_food_color">snake_food_color</string>
+    <string name="snake_difficulty">snake_difficulty</string>
+    <string name="snake_mirror">snake_mirror</string>
+
+                                            <!-- EFFECTS -->
+    <!-- Fill -->
+    <string name="fill_preferences">fill_pref</string>
+    <string name="fill_color">fill_color</string>
+    <!-- Fire -->
+    <string name="fire_preferences">fire_pref</string>
+    <string name="fire_start_color">fire_start_color</string>
+    <string name="fire_end_color">fire_end_color</string>
+    <string name="fire_speed">fire_speed</string>
+</resources>

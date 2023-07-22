@@ -5,13 +5,13 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/snake_head_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/marginBig"
         android:layout_marginTop="@dimen/marginBig"
         android:layout_marginEnd="@dimen/marginBig"
         android:orientation="horizontal"
+        android:id="@+id/fire_start_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,140 +20,104 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="24sp"
-            android:text="@string/choose_snake_head_color" />
+            android:text="@string/choose_fire_start_color" />
         <Button
-            android:id="@+id/snake_head_button"
+            android:id="@+id/fire_start_color_button"
             android:layout_width="41dp"
             android:layout_height="48dp"
             app:cornerRadius="48dp"/>
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/snake_body_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/marginBig"
         android:layout_marginTop="@dimen/marginBig"
         android:layout_marginEnd="@dimen/marginBig"
         android:orientation="horizontal"
+        android:id="@+id/fire_end_layout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/snake_head_layout">
+        app:layout_constraintTop_toBottomOf="@id/fire_start_layout">
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:textSize="24sp"
-            android:text="@string/choose_snake_body_color" />
+            android:text="@string/choose_fire_end_color" />
         <Button
-            android:id="@+id/snake_body_button"
+            android:id="@+id/fire_end_color_button"
             android:layout_width="41dp"
             android:layout_height="48dp"
             app:cornerRadius="48dp"/>
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/snake_food_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginBig"
-        android:layout_marginTop="@dimen/marginBig"
-        android:layout_marginEnd="@dimen/marginBig"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/snake_body_layout">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="24sp"
-            android:text="@string/choose_snake_food_color" />
-        <Button
-            android:id="@+id/snake_food_button"
-            android:layout_width="41dp"
-            android:layout_height="48dp"
-            app:cornerRadius="48dp" />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/snake_difficulty_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginBig"
-        android:layout_marginTop="@dimen/marginBig"
-        android:layout_marginEnd="@dimen/marginBig"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/snake_food_layout">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="24sp"
-            android:text="@string/choose_snake_difficulty" />
-        <Spinner
-            android:id="@+id/snake_difficulty_spinner"
-            android:layout_height="wrap_content"
-            android:layout_width="150dp"
-            android:entries="@array/difficulties"
-            />
-    </LinearLayout>
-    <LinearLayout
-        android:id="@+id/snake_mirror_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/marginBig"
-        android:layout_marginTop="@dimen/marginBig"
-        android:layout_marginEnd="@dimen/marginBig"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/snake_difficulty_layout">
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:textSize="24sp"
-            android:text="@string/choose_snake_mirror"
-            android:layout_marginTop="@dimen/marginBig"/>
-        <androidx.appcompat.widget.SwitchCompat
-            android:id="@+id/snake_mirror_switch"
-            android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
-            />
     </LinearLayout>
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/marginBig"
+        android:layout_marginStart="@dimen/marginBig"
+        android:layout_marginTop="@dimen/marginBig"
+        android:layout_marginEnd="@dimen/marginBig"
         android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fire_end_layout">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/choose_fire_speed"
+            android:textSize="24sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <SeekBar
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:id="@+id/fire_speed"
+            android:min="0"
+            android:max="255"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView2"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_marginBottom="@dimen/marginBig"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
         <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline2"
+            android:id="@+id/fill_guideline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
         <Button
-            android:id="@+id/snake_cancel_button"
+            android:id="@+id/fire_cancel_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/cancel_game"
             android:textSize="15sp"
-            app:layout_constraintEnd_toStartOf="@+id/guideline2"
+            app:layout_constraintEnd_toStartOf="@+id/fill_guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/snake_ok_button"
+            android:id="@+id/fire_ok_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/start_game"
+            android:text="@string/ok"
             android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/guideline2"
+            app:layout_constraintStart_toStartOf="@+id/fill_guideline"
             app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

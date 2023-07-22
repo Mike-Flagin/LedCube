@@ -6,11 +6,7 @@
     <string name="brightness">Brightness: %1$d</string>
     <string name="bluetooth_required">Error: Bluetooth is required</string>
     <string name="choose_device">Choose device</string>
-    <string name="bluetooth_device_name">bluetooth_device_name</string>
-    <string name="bluetooth_device_address">bluetooth_device_address</string>
     <string name="disconnect">Disconnect</string>
-    <string name="string_null">null</string>
-    <string name="pref_file">preferences</string>
     <string name="status_connected">Connected</string>
     <string name="status_connecting">Connecting…</string>
     <string name="status_disconnected">Disconnected</string>
@@ -27,16 +23,17 @@
     <string name="easy">Easy</string>
     <string name="medium">Medium</string>
     <string name="hard">Hard</string>
-    <string name="snake_preferences">snake_pref</string>
-    <string name="snake_body_color">snake_body_color</string>
-    <string name="snake_head_color">snake_head_color</string>
-    <string name="snake_food_color">snake_food_color</string>
-    <string name="snake_difficulty">snake_difficulty</string>
-    <string name="snake_mirror">snake_mirror</string>
     <string name="title_activity_snake_game">SnakeGameActivity</string>
     <string name="error_not_send">Error: not send</string>
     <string name="back_pressed">To exit game press back again</string>
     <string name="snake_gameover">Game Over! Your score is %1$d</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="score">Score: %1$d</string>
+    <string name="fill_effect_name">Fill</string>
+    <string name="fire_effect_name">Fire</string>
+    <string name="choose_fill_color">Fill color:</string>
+    <string name="choose_fire_start_color">Start color:</string>
+    <string name="choose_fire_end_color">End color:</string>
+    <string name="choose_fire_speed">Speed:</string>
+    <string name="draw_effect_name">Draw</string>
 </resources>

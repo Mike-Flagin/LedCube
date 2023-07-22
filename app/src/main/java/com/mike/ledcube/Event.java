@@ -4,7 +4,7 @@ import androidx.annotation.Nullable;
 
 public class Event<T> {
 
-    private T mContent;
+    private final T mContent;
 
     private boolean hasBeenHandled = false;
 
