@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="DrawFieldView">
+        <attr name="gridColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CubeDrawView">
+        <attr name="cubeGridColor" format="color"/>
+    </declare-styleable>
+    
+    <attr name="drawFieldStyle" format="reference"/>
+</resources>

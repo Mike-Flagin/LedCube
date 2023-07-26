@@ -36,4 +36,5 @@
     <string name="choose_fire_end_color">End color:</string>
     <string name="choose_fire_speed">Speed:</string>
     <string name="draw_effect_name">Draw</string>
+    <string name="clear">Clear\n</string>
 </resources>

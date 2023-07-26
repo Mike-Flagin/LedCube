@@ -1,9 +1,18 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Base.Theme.LedCube" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="drawFieldStyle">@style/DefaultDrawFieldStyle</item>
     </style>
 
     <style name="Theme.LedCube" parent="Base.Theme.LedCube" />
+    <style name="DefaultDrawFieldStyle">
+        <item name="gridColor">#C0C0C0</item>
+    </style>
+    <style name="BottomNavigationTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
 </resources>
