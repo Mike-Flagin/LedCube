@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         disconnectButton.setOnClickListener((vw) -> {
             SharedPreferences sharedPref = getSharedPreferences(getString(R.string.pref_file), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putString(getString(R.string.bluetooth_device_name), getString(R.string.string_null));
             editor.putString(getString(R.string.bluetooth_device_address), getString(R.string.string_null));
             editor.apply();
             Intent intent = new Intent(this, ChooseDeviceActivity.class);
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
             finish();
         });
 
-        BLHelper = new BluetoothConnectionHelper(this, getIntent().getStringExtra("device_name"), getIntent().getStringExtra("device_mac"));
+        BLHelper = new BluetoothConnectionHelper(this, getIntent().getStringExtra("device_mac"));
 
         BLHelper.getConnectionStatus().observe(this, this::onConnectionStatus);
         BLHelper.connect();

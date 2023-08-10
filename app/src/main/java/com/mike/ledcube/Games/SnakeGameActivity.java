@@ -27,7 +27,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 public class SnakeGameActivity extends AppCompatActivity {
-    boolean backPressed = false;
+    private boolean backPressed = false;
     TextView scoreTextView;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

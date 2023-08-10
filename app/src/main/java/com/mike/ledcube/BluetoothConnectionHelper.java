@@ -1,35 +1,43 @@
 package com.mike.ledcube;
 
-import static androidx.core.content.ContextCompat.getSystemService;
-
-import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
-import android.bluetooth.BluetoothSocket;
+import android.bluetooth.BluetoothGattCharacteristic;
 import android.content.Context;
-import android.util.Log;
+import android.os.Handler;
+import android.os.Looper;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Objects;
+import com.welie.blessed.BluetoothCentralManager;
+import com.welie.blessed.BluetoothCentralManagerCallback;
+import com.welie.blessed.BluetoothPeripheral;
+import com.welie.blessed.BluetoothPeripheralCallback;
+import com.welie.blessed.GattStatus;
+import com.welie.blessed.HciStatus;
+import com.welie.blessed.WriteType;
+
 import java.util.UUID;
 
 public class BluetoothConnectionHelper {
-    private final BluetoothAdapter bluetoothAdapter;
-    private BluetoothSocket socket;
+    private final UUID SERVICE_UUID;
 
     private final MutableLiveData<Event<char[]>> messagesData = new MutableLiveData<>();
     private final MutableLiveData<ConnectionStatus> connectionStatusData = new MutableLiveData<>();
 
-    private final String deviceName;
     private final String deviceAddress;
-
-    private InputStream inputStream;
-    private OutputStream outputStream;
+    private final UUID WRITE_CHARACTERISTIC_UUID;
+    private final BluetoothPeripheralCallback peripheralCallback = new BluetoothPeripheralCallback() {
+        @Override
+        public void onCharacteristicUpdate(@NonNull BluetoothPeripheral peripheral, @NonNull byte[] value,
+                                           @NonNull BluetoothGattCharacteristic characteristic, @NonNull GattStatus status) {
+            super.onCharacteristicUpdate(peripheral, value, characteristic, status);
+            if (status == GattStatus.SUCCESS) {
+                messagesData.postValue(new Event<>(new String(value).toCharArray()));
+            }
+        }
+    };
+    BluetoothCentralManager central;
 
     enum ConnectionStatus {
         DISCONNECTED,
@@ -37,90 +45,51 @@ public class BluetoothConnectionHelper {
         CONNECTED
     }
 
-    public BluetoothConnectionHelper(Context context, String deviceName, String deviceAddress) {
-        bluetoothAdapter = Objects.requireNonNull(getSystemService(context, BluetoothManager.class)).getAdapter();
-
-        // Remember the configuration
-        this.deviceName = deviceName;
+    public BluetoothConnectionHelper(Context context, String deviceAddress) {
         this.deviceAddress = deviceAddress;
+        BluetoothCentralManagerCallback bluetoothCentralManagerCallback = new BluetoothCentralManagerCallback() {
+            @Override
+            public void onConnectedPeripheral(@NonNull BluetoothPeripheral peripheral) {
+                super.onConnectedPeripheral(peripheral);
+                connectionStatusData.postValue(ConnectionStatus.CONNECTED);
+                BluetoothGattCharacteristic readChar = peripheral.getCharacteristic(UUID.fromString(context.getString(R.string.SERVICE_UUID)),
+                        UUID.fromString(context.getString(R.string.READ_CHARACTERISTIC_UUID)));
+                if (readChar != null) {
+                    peripheral.setNotify(readChar, true);
+                }
+            }
 
-        // Tell the activity we are disconnected.
+            @Override
+            public void onConnectingPeripheral(@NonNull BluetoothPeripheral peripheral) {
+                super.onConnectingPeripheral(peripheral);
+                connectionStatusData.postValue(ConnectionStatus.CONNECTING);
+            }
+
+            @Override
+            public void onConnectionFailed(@NonNull BluetoothPeripheral peripheral, @NonNull HciStatus status) {
+                super.onConnectionFailed(peripheral, status);
+                connectionStatusData.postValue(ConnectionStatus.DISCONNECTED);
+            }
+        };
+        central = new BluetoothCentralManager(context, bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
+        SERVICE_UUID = UUID.fromString(context.getString(R.string.SERVICE_UUID));
+        WRITE_CHARACTERISTIC_UUID = UUID.fromString(context.getString(R.string.WRITE_CHARACTERISTIC_UUID));
+        connect();
         connectionStatusData.postValue(ConnectionStatus.DISCONNECTED);
     }
 
-    private void onConnected(){
-        try {
-            outputStream = socket.getOutputStream();
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error occurred when creating output stream", e);
-            return;
-        }
-        try {
-            inputStream = socket.getInputStream();
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error occurred when creating input stream", e);
-            return;
-        }
-
-        new Thread(() -> {
-            while (true) {
-                try {
-                    byte[] mBuffer = new byte[64];
-                    int numBytes = inputStream.read(mBuffer);
-                    if(numBytes > 0) messagesData.postValue(new Event<>(new String(mBuffer).toCharArray()));
-                } catch (IOException e) {
-                    Log.d(getClass().getSimpleName(), "Input stream was disconnected", e);
-                    break;
-                }
-            }
-        }).start();
-    }
 
     public boolean send(char[] data) {
-        try {
-            if (outputStream == null) return false;
-            outputStream.write(new String(data).getBytes());
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Error occurred when sending data", e);
-            return false;
-        }
-        return true;
+        return central.getPeripheral(deviceAddress).writeCharacteristic(SERVICE_UUID, WRITE_CHARACTERISTIC_UUID,
+                new String(data).getBytes(), WriteType.WITH_RESPONSE);//maybe without_response
     }
 
-    @SuppressLint("MissingPermission")
     public void connect() {
-        try {
-            socket = bluetoothAdapter.getRemoteDevice(deviceAddress).createRfcommSocketToServiceRecord(UUID.fromString("00001101-0000-1000-8000-00805F9B34FB"));
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Socket's create() method failed", e);
-        }
-        new Thread(() -> {
-            bluetoothAdapter.cancelDiscovery();
-
-            try {
-                connectionStatusData.postValue(ConnectionStatus.CONNECTING);
-                socket.connect();
-            } catch (IOException connectException) {
-                try {
-                    socket.close();
-                    connectionStatusData.postValue(ConnectionStatus.DISCONNECTED);
-                } catch (IOException closeException) {
-                    Log.e(getClass().getSimpleName(), "Could not close the client socket", closeException);
-                }
-                return;
-            }
-
-            connectionStatusData.postValue(ConnectionStatus.CONNECTED);
-            onConnected();
-        }).start();
+        central.autoConnectPeripheral(central.getPeripheral(deviceAddress), peripheralCallback);
     }
 
-    public void disconnect(){
-        try {
-            socket.close();
-        } catch (IOException e) {
-            Log.e(getClass().getSimpleName(), "Could not close the client socket", e);
-        }
+    public void disconnect() {
+        central.cancelConnection(central.getPeripheral(deviceAddress));
     }
 
     public LiveData<Event<char[]>> getMessages() {

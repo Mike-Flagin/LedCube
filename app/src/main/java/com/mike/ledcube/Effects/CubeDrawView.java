@@ -23,6 +23,10 @@ interface OnCellChangedListener {
     void onCellChanged(int layer, int row, int column, DrawField field);
 }
 
+interface OnFieldCleared {
+    void onFieldCleared(int layer);
+}
+
 public class CubeDrawView extends ConstraintLayout implements View.OnClickListener, NumberPicker.OnValueChangeListener {
     private final Context context;
     private final AttributeSet attrs;
@@ -32,6 +36,7 @@ public class CubeDrawView extends ConstraintLayout implements View.OnClickListen
     private FragmentManager fragmentManager;
 
     public OnCellChangedListener cellChangedListener = null;
+    public OnFieldCleared fieldClearedListener = null;
     private int currentColor;
     private int currentLayer;
 
@@ -117,6 +122,9 @@ public class CubeDrawView extends ConstraintLayout implements View.OnClickListen
     public void onClick(View v) {
         if (v == binding.clearButton) {
             drawFields[currentLayer].clear();
+            if (fieldClearedListener != null) {
+                fieldClearedListener.onFieldCleared(currentLayer);
+            }
         } else if (v == binding.colorButton) {
             int[] colorPallet = new int[16];
             for (int i = 0; i < colorPallet.length - 2; i++) {
@@ -232,7 +240,7 @@ public class CubeDrawView extends ConstraintLayout implements View.OnClickListen
             }
         }
 
-        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
+        public static final Creator<SavedState> CREATOR = new Creator<>() {
             @Override
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);

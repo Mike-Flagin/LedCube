@@ -53,6 +53,10 @@ public class BluetoothCommands {
                 command.add('1');
                 command.add(DELIMITER);
                 break;
+            case Draw:
+                command.add('2');
+                command.add(DELIMITER);
+                break;
         }
         for (String par : params){
             for(char p : par.toCharArray()) {
@@ -74,14 +78,12 @@ public class BluetoothCommands {
         ArrayList<Character> command = new ArrayList<>();
         command.add('2');
         command.add(DELIMITER);
-        switch (game) {
-            case Snake:
-                command.add('0');
-                command.add(DELIMITER);
-                break;
+        if (game == GameTypes.Snake) {
+            command.add('0');
+            command.add(DELIMITER);
         }
-        for (String par : params){
-            for(char p : par.toCharArray()) {
+        for (String par : params) {
+            for (char p : par.toCharArray()) {
                 command.add(p);
             }
             command.add(DELIMITER);
