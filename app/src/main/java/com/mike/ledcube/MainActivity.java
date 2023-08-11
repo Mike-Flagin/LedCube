@@ -7,14 +7,16 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.navigation.NavController;
-import androidx.navigation.fragment.NavHostFragment;
-import androidx.navigation.ui.NavigationUI;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.lifecycle.Lifecycle;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.widget.ViewPager2;
 
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import java.util.Objects;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,10 +29,22 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        BottomNavigationView navigationView = findViewById(R.id.bottomNavigationView);
-        NavController navController = ((NavHostFragment) Objects.requireNonNull(getSupportFragmentManager().findFragmentById(R.id.fragmentContainerView))).getNavController();
-        NavigationUI.setupWithNavController(navigationView, navController);
+        ViewPager2 viewPager = findViewById(R.id.main_viewpager);
+        viewPager.setAdapter(new MainViewPagerAdapter(getSupportFragmentManager(), getLifecycle()));
+        TabLayout tabLayout = findViewById(R.id.main_tablayout);
+        new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
+            switch (position) {
+                case 0:
+                    tab.setText(getString(R.string.main));
+                    break;
+                case 1:
+                    tab.setText(getString(R.string.effects));
+                    break;
+                case 2:
+                    tab.setText(getString(R.string.games));
+                    break;
+            }
+        }).attach();
 
         connectionTextView = findViewById(R.id.statusTextView);
         connectButton = findViewById(R.id.connect_button);
@@ -77,6 +91,28 @@ public class MainActivity extends AppCompatActivity {
                 connectionTextView.setTextColor(getColor(R.color.red));
                 connectButton.setEnabled(true);
                 break;
+        }
+    }
+
+    public static class MainViewPagerAdapter extends FragmentStateAdapter {
+        private final Fragment[] fragments = new Fragment[3];
+
+        public MainViewPagerAdapter(@NonNull FragmentManager fragmentManager, @NonNull Lifecycle lifecycle) {
+            super(fragmentManager, lifecycle);
+            fragments[0] = new MainFragment();
+            fragments[1] = new EffectsFragment();
+            fragments[2] = new GamesFragment();
+        }
+
+        @Override
+        public int getItemCount() {
+            return fragments.length;
+        }
+
+        @NonNull
+        @Override
+        public Fragment createFragment(int position) {
+            return fragments[position];
         }
     }
 }

@@ -2,8 +2,6 @@ package com.mike.ledcube;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.ScanResult;
 import android.content.Context;
 import android.content.Intent;
@@ -52,7 +50,7 @@ public class ChooseDeviceActivity extends AppCompatActivity {
             availableDeviceList.postValue(peripheral);
         }
     };
-    BluetoothCentralManager central = new BluetoothCentralManager(getApplicationContext(), bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
+    BluetoothCentralManager central;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,12 +62,11 @@ public class ChooseDeviceActivity extends AppCompatActivity {
             requestPermissionLauncher.launch(android.Manifest.permission.BLUETOOTH_CONNECT);
             requestPermissionLauncher.launch(Manifest.permission.BLUETOOTH_SCAN);
         }
-
-        BluetoothAdapter bluetoothAdapter = getSystemService(BluetoothManager.class).getAdapter();
+        central = new BluetoothCentralManager(getApplicationContext(), bluetoothCentralManagerCallback, new Handler(Looper.getMainLooper()));
 
         SharedPreferences sharedPref = this.getSharedPreferences(getString(R.string.pref_file), Context.MODE_PRIVATE);
         String deviceAddress = sharedPref.getString(getString(R.string.bluetooth_device_address), getString(R.string.string_null));
-        if (!deviceAddress.equals(getString(R.string.string_null)) && bluetoothAdapter.getBondedDevices().stream().anyMatch((el) -> el.getAddress().equals(deviceAddress))) {
+        if (!deviceAddress.equals(getString(R.string.string_null))) {
             openMainActivity(deviceAddress);
         }
 

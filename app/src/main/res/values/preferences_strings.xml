@@ -23,6 +23,7 @@
     <string name="fire_start_color">fire_start_color</string>
     <string name="fire_end_color">fire_end_color</string>
     <string name="fire_speed">fire_speed</string>
-    <string name="WRITE_CHARACTERISTIC_UUID">FFE2</string>
-    <string name="READ_CHARACTERISTIC_UUID" tools:ignore="Typos">FFE1</string>
+    <string name="SERVICE_UUID" tools:ignore="TypographyDashes">0000FFE0-0000-1000-8000-00805F9B34FB</string>
+    <string name="WRITE_CHARACTERISTIC_UUID" tools:ignore="TypographyDashes">0000FFE2-0000-1000-8000-00805F9B34FB</string>
+    <string name="READ_CHARACTERISTIC_UUID" tools:ignore="TypographyDashes,Typos">0000FFE1-0000-1000-8000-00805F9B34FB</string>
 </resources>

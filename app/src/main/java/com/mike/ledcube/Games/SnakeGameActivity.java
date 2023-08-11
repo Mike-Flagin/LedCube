@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,23 +87,28 @@ public class SnakeGameActivity extends AppCompatActivity {
         String[] msg = BluetoothCommands.parseCommand(message.getContentIfNotHandled());
         if(msg != null) {
             if (msg[0].equals("2") && msg[1].equals("0")) {
-                if(msg[2].equals("0")) {
+                if (msg[2].equals("0")) {
                     int score = Integer.parseInt(msg[3]);
                     new AlertDialog.Builder(this)
                             .setMessage(getString(R.string.snake_gameover, score))
                             .setPositiveButton(R.string.ok, (dialogInterface, i) -> finish())
                             .setCancelable(false).create().show();
                 }
-                if(msg[2].equals("1")){
+                if (msg[2].equals("1")) {
                     int score = Integer.parseInt(msg[3]);
                     scoreTextView.setText(getString(R.string.score, score));
                 }
             }
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
+        BackPressed();
+    }
+
+    private void BackPressed() {
         if (backPressed) {
             BLHelper.send(BluetoothCommands.getCommand('6'));
             finish();
@@ -125,19 +131,7 @@ public class SnakeGameActivity extends AppCompatActivity {
         } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP) {
             BLHelper.send(BluetoothCommands.getCommand('0'));
         } else if(keyCode == KeyEvent.KEYCODE_BACK){
-            if (backPressed) {
-                BLHelper.send(BluetoothCommands.getCommand('6'));
-                finish();
-            } else {
-                backPressed = true;
-                Toast.makeText(SnakeGameActivity.this, R.string.back_pressed, Toast.LENGTH_SHORT).show();
-                (new Timer()).schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        backPressed = false;
-                    }
-                }, 2000);
-            }
+            BackPressed();
         }
         return true;
     }
@@ -162,12 +156,12 @@ public class SnakeGameActivity extends AppCompatActivity {
             private static final int SWIPE_VELOCITY_THRESHOLD = 100;
 
             @Override
-            public boolean onDown(MotionEvent e) {
+            public boolean onDown(@NonNull MotionEvent e) {
                 return true;
             }
 
             @Override
-            public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            public boolean onFling(MotionEvent e1, @NonNull MotionEvent e2, float velocityX, float velocityY) {
                 boolean result = false;
                 try {
                     float diffY = e2.getY() - e1.getY();

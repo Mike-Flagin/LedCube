@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">Led Cube</string>
     <string name="games">Games</string>
     <string name="effects">Effects</string>
@@ -37,5 +37,4 @@
     <string name="choose_fire_speed">Speed:</string>
     <string name="draw_effect_name">Draw</string>
     <string name="clear">Clear\n</string>
-    <string name="SERVICE_UUID" tools:ignore="TypographyDashes">0000FFE0-0000-1000-8000-00805F9B34FB</string>
 </resources>
